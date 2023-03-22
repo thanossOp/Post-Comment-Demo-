@@ -8,7 +8,7 @@ const Comment = require('../model/commentmodel')
 const getAllComment = async (req, res) => {
     try {
         const postId = req.params.postid
-        const getallcomment = await Comment.find({ post: postId })
+        const getallcomment = await Comment.find({ post: postId ,isDeleted:false})
         if (!getallcomment) {
             return res.status(404).json({
                 status: 404,
@@ -55,9 +55,9 @@ const createComment = async (req, res) => {
 
 const updateComment = async (req, res) => {
     try {
-        if (checkcomment) {
+        
             const id = req.params.id
-            const updatecomment = await Comment.findByIdAndUpdate(id, req.body, {
+            const updatecomment = await Comment.findByIdAndUpdate({_id : id ,isDeleted:false}, req.body, {
                 new: true
             })
             if (!updatecomment) {
@@ -71,7 +71,7 @@ const updateComment = async (req, res) => {
                 message: "Update comment successfully",
                 data: exc(updatecomment)
             })
-        }
+        
 
     } catch (error) {
         res.status(401).json({
@@ -83,9 +83,9 @@ const updateComment = async (req, res) => {
 
 const deleteComment = async (req, res) => {
 
-    try {
-        if (checkcomment) {
+    try {            
             const id = req.params.id
+
             const deletecomment = await Comment.findOneAndUpdate({ _id: id, isDeleted: false }, {
                 $set: {
                     isDeleted: true,
@@ -108,7 +108,7 @@ const deleteComment = async (req, res) => {
                 message: "Delete comment successfully",
                 data: deletecomment
             })
-        }
+        
     }
     catch (error) {
         res.status(401).json({

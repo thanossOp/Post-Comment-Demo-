@@ -4,7 +4,7 @@ const Post = require('../model/postmodel')
 const getallPost = async (req, res) => {
 
     try {
-        const post = await Post.find()
+        const post = await Post.find({isDeleted:false})
 
         if (!getallPost) {
             return res.status(404).json({
@@ -53,7 +53,7 @@ const createPost = async (req, res) => {
 const searchPost = async (req, res) => {
     try {
         const id = req.params.id
-        const searchpost = await Post.findById(id)
+        const searchpost = await Post.findById({_id:id,isDeleted:false})
         if (!searchpost) {
             return res.status(404).json({
                 status: 404,
@@ -76,7 +76,7 @@ const searchPost = async (req, res) => {
 const updatePost = async (req, res) => {
     try {
         const id = req.params.id
-        const updatedpost = await Post.findOneAndUpdate({ _id: id }, { ...req.body }, { new: true })
+        const updatedpost = await Post.findOneAndUpdate({ _id: id ,isDeleted:false}, { ...req.body }, { new: true })
 
         if (!updatedpost) {
             return res.status(404).json({

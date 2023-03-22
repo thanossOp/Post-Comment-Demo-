@@ -2,7 +2,7 @@ const Post = require('../model/postmodel')
 const Comment = require('../model/commentmodel')
 
 
-async function checkcomment(req, res, next) {
+async function canDelete(req, res, next) {
     try {
 
         const commentid = req.params.id
@@ -41,5 +41,37 @@ async function checkcomment(req, res, next) {
 }
 
 
-module.exports = checkcomment
+
+async function canUpdate(req, res, next) {
+    try {
+
+        const commentid = req.params.id
+        const user = req.user._id
+
+        const comment = await Comment.findById(commentid).populate('author')
+        const commentowner = comment.author._id
+
+
+        if (req.user.role == "admin") {
+            return next()
+        }
+        if (user.toString() === commentowner.toString()) {
+            return next()
+        }
+        else {
+            res.json({
+                status: 401,
+                messages: "You are not authorized"
+            })
+        }
+
+    } catch (error) {
+        res.json({
+            status: 401,
+            messages: "You are not authorized"
+        })
+    }
+}
+
+module.exports = {canDelete , canUpdate}
 
