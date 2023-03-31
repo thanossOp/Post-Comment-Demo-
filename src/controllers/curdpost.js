@@ -1,3 +1,4 @@
+const redisclient = require('../config/db')
 const { exc, excforarray } = require('../helper/exc')
 const Post = require('../model/postmodel')
 
@@ -54,6 +55,8 @@ const searchPost = async (req, res) => {
     try {
         const id = req.params.id
         const searchpost = await Post.findById({_id:id,isDeleted:false})
+        const redispost = JSON.stringify(searchpost)
+        redisclient.set(`post:${id}`,redispost)
         if (!searchpost) {
             return res.status(404).json({
                 status: 404,
@@ -62,7 +65,7 @@ const searchPost = async (req, res) => {
         }
         res.status(200).json({
             status: 200,
-            message: "This is your searched Post",
+            message: "This is your searched Post (DATABASE)",
             data: exc(searchpost)
         })
     } catch (error) {
@@ -131,5 +134,6 @@ const deletePost = async (req, res) => {
         })
     }
 }
+
 
 module.exports = { createPost, getallPost, searchPost, updatePost, deletePost }
