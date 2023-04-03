@@ -31,33 +31,3 @@ function isAuth(roles) {
     }
 }
 module.exports = isAuth;
-
-
-
-
-// const jwt = require('jsonwebtoken')
-// const passport = require('passport');
-// const { messages } = require('../validation/registervalidation');
-// const User = require('../model/usermodel')
-
-
-// async function isAuth(req, res, next) {
-//     const cookie = req.cookies.authcookie
-//     const verify = jwt.verify(cookie, process.env.SECRET_KEY)
-//     const useremail = await User.findOne({ Email: verify.Email })
-
-
-//     if (verify) {
-//         req.user = useremail
-//         next()
-//     } else {
-//         res.json({
-//             status: 401,
-//             messages: "User is not valid"
-//         })
-//     }
-
-// }
-
-// module.exports = isAuth;
-

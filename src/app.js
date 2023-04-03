@@ -6,6 +6,8 @@ const ExtractJwt = require("passport-jwt").ExtractJwt
 const passport = require("passport")
 require('./config/db')
 
+require('./process/index')
+
 const userrouter = require('./routes/user')
 
 const postrouter = require('./routes/post')

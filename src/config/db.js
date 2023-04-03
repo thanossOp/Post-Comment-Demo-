@@ -1,8 +1,12 @@
 const mongoose = require('mongoose')
 
+const {redis_port,redis_uri} = require('../config/rediscredentials')
 const redis = require('redis')
 
-const redisclient = redis.createClient()
+const redisclient = redis.createClient({
+    host : redis_uri,
+    port : redis_port
+})
 
 const db = process.env.DATABASE.replace(
     '<PASSWORD>',

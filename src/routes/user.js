@@ -8,7 +8,10 @@ const { createUser } = require('../controllers/registeruser')
 
 const { loginUser } = require('../controllers/loginuser')
 
+const { sendemailtouser } = require('../controllers/sendemail')
+
 router.post('/register', datavalidation(validate_user), createUser)
 router.post('/login', loginUser)
+router.post('/sendemail',sendemailtouser)
 
 module.exports = router;
